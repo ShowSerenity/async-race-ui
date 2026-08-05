@@ -44,6 +44,13 @@ module.exports = {
     ],
     'import/prefer-default-export': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state', 'draft'],
+      },
+    ],
     'max-lines-per-function': ['error', { max: 40, skipComments: true, skipBlankLines: true }],
     'no-magic-numbers': [
       'error',

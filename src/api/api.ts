@@ -1,10 +1,10 @@
 import type {
-    Car,
-    EngineStartStopResponse,
-    PaginatedResponse,
-    SortField,
-    SortOrder,
-    Winner
+  Car,
+  EngineStartStopResponse,
+  PaginatedResponse,
+  SortField,
+  SortOrder,
+  Winner,
 } from '../types/types';
 
 const BASE_URL = 'http://127.0.0.1:3000';
@@ -15,6 +15,11 @@ const WINNERS_URL = `${BASE_URL}/winners`;
 
 const CARS_PER_PAGE = 7;
 const WINNERS_PER_PAGE = 10;
+
+const HTTP_STATUS = {
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+} as const;
 
 // Error handling
 const handleResponse = async <T>(response: Response): Promise<T> => {
@@ -85,7 +90,7 @@ export const drive = async (id: number): Promise<{ success: boolean }> => {
     method: 'PATCH',
   });
 
-  if (response.status === 500) {
+  if (response.status === HTTP_STATUS.INTERNAL_SERVER_ERROR) {
     return { success: false };
   }
 
@@ -117,7 +122,7 @@ export const getWinners = async (
 export const getWinner = async (id: number): Promise<Winner | null> => {
   const response = await fetch(`${WINNERS_URL}/${id}`);
 
-  if (response.status === 404) {
+  if (response.status === HTTP_STATUS.NOT_FOUND) {
     return null;
   }
 
