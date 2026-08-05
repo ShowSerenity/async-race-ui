@@ -14,7 +14,9 @@
   --shadow-glow: 0 0 12px rgba(126, 231, 255, 0.45), 0 0 26px rgba(255, 122, 217, 0.22);
   --shadow-panel: 0 16px 40px rgba(0, 0, 0, 0.35);
   --border-neon: 1px solid rgba(126, 231, 255, 0.75);
-  --border-pink: 1px solid rgba(255, 122, 217, 0.75);
+  --border-pink: 1px solid rgba(255, 122, 217, 0.78);
+  --border-green: 1px solid rgba(123, 255, 154, 0.82);
+  --border-orange: 1px solid rgba(255, 178, 77, 0.82);
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
@@ -185,7 +187,7 @@ a {
   min-height: 38px;
   padding: 0 16px;
   border-radius: 11px;
-  border: 1px solid rgba(126, 231, 255, 0.75);
+  border: var(--border-neon);
   background: rgba(9, 14, 31, 0.72);
   color: var(--cyan);
   text-transform: uppercase;
@@ -209,17 +211,17 @@ a {
 }
 
 .neon-button--pink {
-  border-color: rgba(255, 122, 217, 0.78);
+  border-color: var(--border-pink);
   color: var(--pink);
 }
 
 .neon-button--green {
-  border-color: rgba(123, 255, 154, 0.82);
+  border-color: var(--border-green);
   color: var(--green);
 }
 
 .neon-button--orange {
-  border-color: rgba(255, 178, 77, 0.82);
+  border-color: var(--border-orange);
   color: var(--orange);
 }
 
@@ -412,7 +414,7 @@ a {
 .winners-table td {
   padding: 14px 12px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--bg-line);
 }
 
 .winners-table th {
