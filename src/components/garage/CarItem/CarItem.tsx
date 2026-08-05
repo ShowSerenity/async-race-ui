@@ -1,32 +1,43 @@
 import { useEffect, useRef, useState } from 'react';
-import { deleteCar, deleteWinner, drive, startEngine, stopEngine } from '../../api/api';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
-  deleteCarThunk,
-  setSelectedCarId,
-} from '../../features/garageSlice';
+  deleteCar as deleteCarApi,
+  deleteWinner,
+  drive,
+  startEngine,
+  stopEngine,
+} from '../../../api/api';
+import { deleteCarThunk, setSelectedCarId } from '../../../features/garageSlice';
 import {
   resetCar,
   setCarDriving,
   setCarEngineStarted,
   setCarError,
-  setCarFinished,
-} from '../../features/raceSlice';
-import type { Car } from '../../types/types';
+} from '../../../features/raceSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import type { Car } from '../../../types/types';
+import { CarIcon } from '../../common/CarIcon/CarIcon';
+import './CarItem.css';
 
 interface CarItemProps {
   car: Car;
 }
 
-const ANIMATION_PADDING_PX = 88;
+const ANIMATION_PADDING_PX = 90;
+const MS_IN_SECOND = 1000;
+const DEFAULT_POSITION = 0;
+
+const getTrackDistance = (trackWidth: number) => Math.max(trackWidth - ANIMATION_PADDING_PX, 0);
+
+const calculateDuration = (distance: number, velocity: number) =>
+  (distance / velocity) * MS_IN_SECOND;
 
 export const CarItem = ({ car }: CarItemProps) => {
   const dispatch = useAppDispatch();
   const raceState = useAppSelector(state => state.race.cars[car.id]);
   const isRaceInProgress = useAppSelector(state => state.race.isRaceInProgress);
-  const carTrackRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const animationRef = useRef<number | null>(null);
-  const [position, setPosition] = useState(0);
+  const [position, setPosition] = useState(DEFAULT_POSITION);
 
   const isEngineStarted = raceState?.isEngineStarted ?? false;
   const isDriving = raceState?.isDriving ?? false;
@@ -37,17 +48,12 @@ export const CarItem = ({ car }: CarItemProps) => {
       animationRef.current = null;
     }
 
-    setPosition(0);
+    setPosition(DEFAULT_POSITION);
   };
 
-  const getTrackDistance = () => {
-    const trackWidth = carTrackRef.current?.clientWidth ?? 0;
-    return Math.max(trackWidth - ANIMATION_PADDING_PX, 0);
-  };
-
-  const startAnimation = (velocity: number, distance: number) => {
-    const totalDistance = getTrackDistance();
-    const duration = (distance / velocity) * 1000;
+  const animateCar = (velocity: number, distance: number) => {
+    const totalDistance = getTrackDistance(trackRef.current?.clientWidth ?? 0);
+    const duration = calculateDuration(distance, velocity);
     const startTime = performance.now();
 
     const animate = (time: number) => {
@@ -70,6 +76,7 @@ export const CarItem = ({ car }: CarItemProps) => {
 
     try {
       const startResponse = await startEngine(car.id);
+
       dispatch(setCarEngineStarted({ id: car.id, started: true }));
       dispatch(setCarDriving({ id: car.id, isDriving: true }));
 
@@ -81,7 +88,7 @@ export const CarItem = ({ car }: CarItemProps) => {
         return;
       }
 
-      startAnimation(startResponse.velocity, startResponse.distance);
+      animateCar(startResponse.velocity, startResponse.distance);
     } catch {
       dispatch(setCarError({ id: car.id, hasError: true }));
       stopAnimation();
@@ -110,7 +117,7 @@ export const CarItem = ({ car }: CarItemProps) => {
       return;
     }
 
-    await deleteCar(car.id);
+    await deleteCarApi(car.id);
     await deleteWinner(car.id);
     dispatch(deleteCarThunk(car.id));
   };
@@ -122,52 +129,51 @@ export const CarItem = ({ car }: CarItemProps) => {
   }, [isDriving]);
 
   return (
-    <article className="car-card">
-      <div className="car-card__actions">
-        <button className="neon-button" type="button" onClick={handleSelect}>
-          Select
-        </button>
-        <button
-          className="neon-button neon-button--pink"
-          type="button"
-          onClick={handleDelete}
-          disabled={isRaceInProgress || isDriving}
-        >
-          Remove
-        </button>
-        <button
-          className="neon-button neon-button--green"
-          type="button"
-          onClick={handleStartEngine}
-          disabled={isEngineStarted}
-        >
-          Start
-        </button>
-        <button
-          className="neon-button neon-button--orange"
-          type="button"
-          onClick={handleStopEngine}
-          disabled={!isEngineStarted}
-        >
-          Stop
-        </button>
+    <div className="car-row">
+      <div className="car-row__controls">
+        <div className="car-row__action">
+          <button
+            className="neon-button neon-button--mini car-action-btn"
+            type="button"
+            onClick={handleSelect}
+          >
+            Select
+          </button>
+          <button className="neon-button neon-button--mini car-key-btn" type="button">
+            A
+          </button>
+        </div>
+
+        <div className="car-row__action">
+          <button
+            className="neon-button neon-button--pink neon-button--mini car-action-btn"
+            type="button"
+            onClick={handleDelete}
+            disabled={isRaceInProgress || isDriving}
+          >
+            Remove
+          </button>
+          <button
+            className="neon-button neon-button--pink neon-button--mini car-key-btn"
+            type="button"
+          >
+            B
+          </button>
+        </div>
       </div>
 
-      <div className="car-card__track" ref={carTrackRef}>
+      <div className="car-row__track" ref={trackRef}>
         <div
-          className="car"
+          className="car-icon-wrap"
           style={{
             transform: `translateY(-50%) translateX(${position}px)`,
-            color: car.color,
-            backgroundColor: car.color,
           }}
         >
-          <div className="car__window" />
+          <CarIcon color={car.color} />
         </div>
-        <div className="car-card__flag">FINISH</div>
-      </div>
 
-      <div className="car-card__name">{car.name}</div>
-    </article>
+        <div className="car-row__name">{car.name}</div>
+      </div>
+    </div>
   );
 };

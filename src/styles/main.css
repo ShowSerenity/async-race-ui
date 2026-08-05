@@ -66,8 +66,6 @@ a {
   width: 100%;
 }
 
-/* App shell */
-
 .app {
   min-height: 100vh;
   display: flex;
@@ -128,8 +126,6 @@ a {
   flex: 1;
 }
 
-/* Common page blocks */
-
 .page {
   display: flex;
   flex-direction: column;
@@ -154,10 +150,6 @@ a {
   box-shadow: var(--shadow-panel);
 }
 
-.panel--soft {
-  background: rgba(18, 26, 51, 0.62);
-}
-
 .section-label {
   margin: 0;
   color: var(--text-soft);
@@ -166,7 +158,11 @@ a {
   font-size: 13px;
 }
 
-/* Controls */
+.section-label--ghost {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
 
 .controls {
   display: flex;
@@ -225,6 +221,20 @@ a {
   color: var(--orange);
 }
 
+.neon-button--small {
+  min-width: 170px;
+  justify-content: center;
+}
+
+.neon-button--mini {
+  min-width: 44px;
+  padding-inline: 12px;
+}
+
+.button-icon {
+  margin-right: 8px;
+}
+
 .neon-input {
   min-height: 38px;
   min-width: 220px;
@@ -260,30 +270,63 @@ a {
   border-radius: 6px;
 }
 
-/* Garage */
-
 .garage-layout {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.garage-layout__top {
+.garage-track {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
 }
 
-.garage-counter {
+.garage-track::before,
+.garage-track::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.garage-track::before {
+  left: 282px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+}
+
+.garage-track::after {
+  right: 30px;
+  background: rgba(123, 255, 154, 0.95);
+  box-shadow: 0 0 8px rgba(123, 255, 154, 0.55);
+}
+
+.garage-track-label-start,
+.garage-track-label-finish {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(+90deg);
   font-family: var(--font-display);
-  font-size: 28px;
-  letter-spacing: 0.08em;
-  color: var(--cyan);
-  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  z-index: 3;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
-.garage-counter span {
+.garage-track-label-start {
+  left: 272px;
   color: var(--pink);
+}
+
+.garage-track-label-finish {
+  right: -4px;
+  color: var(--green);
 }
 
 .track-header,
@@ -305,184 +348,129 @@ a {
 .garage-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
 }
 
-.car-card {
+.car-row {
   display: grid;
-  grid-template-columns: 170px 1fr;
-  gap: 12px;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: var(--radius-lg);
-  background: rgba(8, 13, 26, 0.72);
-  border: 1px solid rgba(126, 231, 255, 0.16);
+  grid-template-columns: 210px 1fr;
+  min-height: 92px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.car-card__actions {
+.car-row:first-child {
+  border-top: none;
+}
+
+.car-row__controls {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
   gap: 8px;
-  align-items: center;
+  padding: 10px 12px 10px 0;
 }
 
-.car-card__name {
+.car-row__action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.car-action-btn {
+  width: 116px;
+  justify-content: center;
+}
+
+.car-key-btn {
+  width: 44px;
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.car-row__track {
+  position: relative;
+  min-height: 92px;
+  overflow: hidden;
+}
+
+.car-row__track::before,
+.car-row__track::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  z-index: 1;
+}
+
+.car-row__track::before {
+  left: 72px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+}
+
+.car-row__track::after {
+  right: 10px;
+  background: rgba(123, 255, 154, 0.95);
+  box-shadow: 0 0 8px rgba(123, 255, 154, 0.55);
+}
+
+.car-row__name {
+  position: absolute;
+  left: 46%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-family: var(--font-display);
   font-size: 24px;
   letter-spacing: 0.05em;
   color: var(--text-soft);
   text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
-.car-card__track {
-  position: relative;
-  min-height: 84px;
-  border-top: 2px solid rgba(255, 255, 255, 0.35);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
-  overflow: hidden;
-}
-
-.car-card__flag {
+.car-icon-wrap {
   position: absolute;
-  right: 10px;
+  left: -42px;
   top: 50%;
-  transform: translateY(-50%);
-  color: var(--green);
-  font-size: 18px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  width: 160px;
+  height: 72px;
+  z-index: 2;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.15))
+    drop-shadow(0 0 2px currentColor);
 }
 
-.car {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 58px;
-  height: 26px;
-  transform: translateY(-50%);
-  border-radius: 10px 10px 8px 8px;
-  box-shadow:
-    0 0 8px currentColor,
-    0 0 18px currentColor;
-}
-
-.car::before,
-.car::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
-}
-
-.car::before {
-  left: 8px;
-}
-
-.car::after {
-  right: 8px;
-}
-
-.car__window {
-  position: absolute;
-  left: 8px;
-  top: 5px;
-  width: 20px;
-  height: 8px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.32);
-}
-
-/* Winners */
-
-.winners-table {
+.car-icon {
   width: 100%;
-  border-collapse: collapse;
-  overflow: hidden;
+  height: 100%;
+  display: block;
 }
 
-.winners-table__wrap {
-  overflow-x: auto;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 122, 217, 0.3);
-}
-
-.winners-table th,
-.winners-table td {
-  padding: 14px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--bg-line);
-}
-
-.winners-table th {
-  font-family: var(--font-display);
-  font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-soft);
-  background: rgba(18, 26, 51, 0.9);
-}
-
-.winners-table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.winners-table__car {
-  width: 54px;
-  height: 24px;
-  border-radius: 10px;
-  box-shadow:
-    0 0 8px currentColor,
-    0 0 18px currentColor;
-}
-
-.winners-sort {
-  border: none;
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  font: inherit;
-  text-transform: inherit;
-  letter-spacing: inherit;
-}
-
-/* Pagination */
-
-.pagination {
+.garage-bottom {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 16px;
   flex-wrap: wrap;
-  padding: 14px 16px;
 }
 
-.pagination__info {
-  color: var(--text-soft);
-  letter-spacing: 0.05em;
+.garage-counter {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
   text-transform: uppercase;
 }
 
-.pagination__buttons {
+.garage-counter span {
+  color: var(--pink);
+}
+
+.garage-pagination {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
-
-/* Empty state */
-
-.empty-state {
-  padding: 28px 16px;
-  text-align: center;
-  color: var(--text-muted);
-  border-radius: var(--radius-lg);
-  border: 1px dashed rgba(126, 231, 255, 0.25);
-  background: rgba(18, 26, 51, 0.45);
-}
-
-/* Winner banner */
 
 .winner-banner {
   padding: 14px 16px;
@@ -493,24 +481,27 @@ a {
   box-shadow: 0 0 22px rgba(123, 255, 154, 0.14);
 }
 
-/* Responsive */
+.empty-state {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--text-muted);
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(126, 231, 255, 0.25);
+  background: rgba(18, 26, 51, 0.45);
+}
 
 @media (max-width: 900px) {
   .page__title {
     font-size: 36px;
   }
 
-  .car-card {
-    grid-template-columns: 1fr;
-  }
-
-  .car-card__actions {
-    justify-content: flex-start;
-  }
-
   .neon-input {
     min-width: 180px;
     flex: 1 1 180px;
+  }
+
+  .car-row__name {
+    font-size: 20px;
   }
 }
 
@@ -543,7 +534,16 @@ a {
     min-width: 0;
   }
 
-  .pagination {
-    justify-content: center;
+  .garage-bottom {
+    align-items: flex-start;
+  }
+
+  .garage-pagination {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .car-action-btn {
+    width: 108px;
   }
 }

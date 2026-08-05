@@ -1,0 +1,157 @@
+.car-row {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  grid-template-areas: 'controls track';
+  min-height: 92px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+}
+
+.car-row:first-child {
+  border-top: none;
+}
+
+.car-row__controls {
+  grid-area: controls;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px 10px 0;
+  min-width: 0;
+  position: relative;
+  /* Кнопки должны быть выше глобальных линий старта/финиша
+     (z-index: 2 на .garage-track::before/::after), иначе на
+     мобильном линия проходит поверх них. */
+  z-index: 4;
+  background: var(--bg);
+}
+
+.car-row__action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.car-action-btn {
+  width: 116px;
+  justify-content: center;
+}
+
+.car-key-btn {
+  width: 44px;
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.car-row__track {
+  grid-area: track;
+  position: relative;
+  min-height: 92px;
+  overflow: hidden;
+}
+
+.car-row__track::before,
+.car-row__track::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  z-index: 1;
+}
+
+.car-row__track::before {
+  left: 72px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+}
+
+.car-row__track::after {
+  right: 10px;
+  background: rgba(123, 255, 154, 0.95);
+  box-shadow: 0 0 8px rgba(123, 255, 154, 0.55);
+}
+
+.car-row__name {
+  position: absolute;
+  left: 46%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(14px, 3.4vw, 24px);
+  letter-spacing: 0.05em;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  white-space: nowrap;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.car-icon-wrap {
+  position: absolute;
+  left: -42px;
+  top: 50%;
+  width: 160px;
+  height: 72px;
+  z-index: 2;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.15))
+    drop-shadow(0 0 2px currentColor);
+}
+
+@media (max-width: 900px) {
+  .car-row__name {
+    font-size: clamp(13px, 3vw, 20px);
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .car-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'controls'
+      'track';
+  }
+
+  .car-row__controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .car-row__action {
+    flex: 1 1 calc(50% - 4px);
+    justify-content: center;
+  }
+
+  .car-action-btn {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+  }
+
+  .car-key-btn {
+    width: 40px;
+    flex: 0 0 40px;
+  }
+
+  .car-row__track {
+    min-height: 80px;
+  }
+
+  .car-row__name {
+    font-size: clamp(12px, 4vw, 18px);
+    max-width: 70%;
+    margin-left: 20px;
+  }
+
+  .car-icon-wrap {
+    left: -32px;
+    width: 120px;
+    height: 56px;
+  }
+}

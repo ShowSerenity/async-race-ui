@@ -1,23 +1,29 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { createCarThunk, fetchCars, setSelectedCarId, updateCarThunk } from '../../features/garageSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import {
+  createCarThunk,
+  fetchCars,
+  setSelectedCarId,
+  updateCarThunk,
+} from '../../../features/garageSlice';
+import { isValidCarName, normalizeCarName, MAX_NAME_LENGTH } from '../../../helpers/carValidation';
+import './CarForm.css';
 
-const MIN_NAME_LENGTH = 1;
-const MAX_NAME_LENGTH = 20;
+const DEFAULT_COLOR = '#000000';
 
 export const CarForm = () => {
   const dispatch = useAppDispatch();
   const { cars, selectedCarId, page } = useAppSelector(state => state.garage);
 
   const [createName, setCreateName] = useState('');
-  const [createColor, setCreateColor] = useState('#000000');
+  const [createColor, setCreateColor] = useState(DEFAULT_COLOR);
   const [updateName, setUpdateName] = useState('');
-  const [updateColor, setUpdateColor] = useState('#000000');
+  const [updateColor, setUpdateColor] = useState(DEFAULT_COLOR);
 
   useEffect(() => {
     if (!selectedCarId) {
       setUpdateName('');
-      setUpdateColor('#000000');
+      setUpdateColor(DEFAULT_COLOR);
       return;
     }
 
@@ -29,43 +35,46 @@ export const CarForm = () => {
     }
   }, [cars, selectedCarId]);
 
-  const isCreateNameValid =
-    createName.trim().length >= MIN_NAME_LENGTH && createName.trim().length <= MAX_NAME_LENGTH;
-
-  const isUpdateNameValid =
-    updateName.trim().length >= MIN_NAME_LENGTH && updateName.trim().length <= MAX_NAME_LENGTH;
-
-  const refreshCars = async () => {
+  const refreshPageCars = async () => {
     await dispatch(fetchCars(page));
   };
 
   const handleCreate = async () => {
-    if (!isCreateNameValid) {
+    if (!isValidCarName(createName)) {
       return;
     }
 
-    await dispatch(createCarThunk({ name: createName.trim(), color: createColor }));
+    await dispatch(
+      createCarThunk({
+        name: normalizeCarName(createName),
+        color: createColor,
+      }),
+    );
+
     setCreateName('');
-    setCreateColor('#000000');
-    await refreshCars();
+    setCreateColor(DEFAULT_COLOR);
+    await refreshPageCars();
   };
 
   const handleUpdate = async () => {
-    if (!selectedCarId || !isUpdateNameValid) {
+    if (!selectedCarId || !isValidCarName(updateName)) {
       return;
     }
 
     await dispatch(
       updateCarThunk({
         id: selectedCarId,
-        car: { name: updateName.trim(), color: updateColor },
+        car: {
+          name: normalizeCarName(updateName),
+          color: updateColor,
+        },
       }),
     );
 
     dispatch(setSelectedCarId(null));
     setUpdateName('');
-    setUpdateColor('#000000');
-    await refreshCars();
+    setUpdateColor(DEFAULT_COLOR);
+    await refreshPageCars();
   };
 
   return (
@@ -89,7 +98,7 @@ export const CarForm = () => {
           className="neon-button neon-button--pink"
           type="button"
           onClick={handleCreate}
-          disabled={!isCreateNameValid}
+          disabled={!isValidCarName(createName)}
         >
           Create
         </button>
@@ -116,7 +125,7 @@ export const CarForm = () => {
           className="neon-button neon-button--pink"
           type="button"
           onClick={handleUpdate}
-          disabled={!selectedCarId || !isUpdateNameValid}
+          disabled={!selectedCarId || !isValidCarName(updateName)}
         >
           Update
         </button>

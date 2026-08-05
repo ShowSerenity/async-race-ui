@@ -1,6 +1,6 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
-import { GaragePage } from './components/garage/GaragePage';
+import { GaragePage } from './pages/GaragePage/GaragePage';
 import { WinnersPage } from './components/winners/WinnersPage';
 
 const App = () => (

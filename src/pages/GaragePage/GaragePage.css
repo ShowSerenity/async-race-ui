@@ -1,0 +1,142 @@
+.garage-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.garage-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  --track-start: 282px;
+  --track-end: 10px;
+  --track-start-label: 272px;
+  --track-label-z: 3;
+}
+
+.garage-track::before,
+.garage-track::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.garage-track::before {
+  left: var(--track-start);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+}
+
+.garage-track::after {
+  right: var(--track-end);
+  background: rgba(123, 255, 154, 0.95);
+  box-shadow: 0 0 8px rgba(123, 255, 154, 0.55);
+}
+
+.garage-track-label-start,
+.garage-track-label-finish {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(+90deg);
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  z-index: var(--track-label-z);
+  pointer-events: none;
+  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.garage-track-label-start {
+  left: var(--track-start-label);
+  color: var(--pink);
+}
+
+.garage-track-label-finish {
+  right: -4px;
+  color: var(--green);
+}
+
+.track-header,
+.track-footer {
+  height: 16px;
+  border-top: 2px solid rgba(255, 255, 255, 0.75);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      rgba(255, 178, 77, 0.95) 10px 20px,
+      transparent 20px 30px,
+      rgba(255, 255, 255, 0.9) 30px 40px
+    );
+  opacity: 0.95;
+}
+
+.garage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.garage-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.garage-counter {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+
+.garage-counter span {
+  color: var(--pink);
+}
+
+.garage-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  .garage-track {
+    --track-start: 72px;
+    --track-start-label: 46px;
+  }
+
+  .garage-track-label-start,
+  .garage-track-label-finish {
+    font-size: 11px;
+    --track-label-z: 5;
+    margin-top: 20px;
+  }
+
+  .garage-track-label-start {
+    left: 65px;
+  }
+
+  .garage-track-label-finish {
+    right: -20px;
+  }
+
+  .garage-bottom {
+    align-items: flex-start;
+  }
+
+  .garage-pagination {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
