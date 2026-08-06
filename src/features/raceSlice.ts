@@ -44,7 +44,8 @@ const initialState: RaceState = {
   raceWinnerId: null,
 };
 
-const getCarState = (state: RaceState, id: number): CarRaceState => state.cars[id] ?? EMPTY_CAR_STATE;
+const getCarState = (state: RaceState, id: number): CarRaceState =>
+  state.cars[id] ?? EMPTY_CAR_STATE;
 
 const raceSlice = createSlice({
   name: 'race',
@@ -145,27 +146,28 @@ export const {
   startNewRaceAttempt,
 } = raceSlice.actions;
 
-export const finishRaceCar = createAsyncThunk<void, { id: number; time: number }, { state: RootState }>(
-  'race/finishRaceCar',
-  (payload, { getState, dispatch }) => {
-    const { race, garage } = getState();
+export const finishRaceCar = createAsyncThunk<
+  void,
+  { id: number; time: number },
+  { state: RootState }
+>('race/finishRaceCar', (payload, { getState, dispatch }) => {
+  const { race, garage } = getState();
 
-    if (!race.isRaceInProgress || race.raceWinnerId !== null) {
-      return;
-    }
+  if (!race.isRaceInProgress || race.raceWinnerId !== null) {
+    return;
+  }
 
-    const car = garage.cars.find(item => item.id === payload.id);
+  const car = garage.cars.find(item => item.id === payload.id);
 
-    dispatch(
-      setWinner({
-        id: payload.id,
-        name: car?.name ?? 'Unknown car',
-        time: payload.time,
-      }),
-    );
+  dispatch(
+    setWinner({
+      id: payload.id,
+      name: car?.name ?? 'Unknown car',
+      time: payload.time,
+    }),
+  );
 
-    dispatch(upsertWinner({ id: payload.id, time: payload.time }));
-  },
-);
+  dispatch(upsertWinner({ id: payload.id, time: payload.time }));
+});
 
 export default raceSlice.reducer;

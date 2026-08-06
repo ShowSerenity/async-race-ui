@@ -42,12 +42,20 @@ export const WinnersTable = ({ winners, startIndex }: WinnersTableProps) => {
           <th>Car</th>
           <th>Name</th>
           <th>
-            <button className="winners-table__sort-btn" type="button" onClick={() => handleSort('wins')}>
+            <button
+              className="winners-table__sort-btn"
+              type="button"
+              onClick={() => handleSort('wins')}
+            >
               Wins {getSortIcon('wins', sort, order)}
             </button>
           </th>
           <th>
-            <button className="winners-table__sort-btn" type="button" onClick={() => handleSort('time')}>
+            <button
+              className="winners-table__sort-btn"
+              type="button"
+              onClick={() => handleSort('time')}
+            >
               Best time (s) {getSortIcon('time', sort, order)}
             </button>
           </th>

@@ -95,8 +95,7 @@
   width: 160px;
   height: 72px;
   z-index: 2;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.15))
-    drop-shadow(0 0 2px currentColor);
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.15)) drop-shadow(0 0 2px currentColor);
 }
 
 @media (max-width: 900px) {

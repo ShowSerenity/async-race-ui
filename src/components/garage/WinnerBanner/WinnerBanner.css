@@ -52,20 +52,26 @@
 .winner-banner__title {
   color: var(--yellow);
   font-size: clamp(28px, 6vw, 44px);
-  text-shadow: 0 0 10px rgba(255, 224, 102, 0.85), 0 0 22px rgba(255, 224, 102, 0.5);
+  text-shadow:
+    0 0 10px rgba(255, 224, 102, 0.85),
+    0 0 22px rgba(255, 224, 102, 0.5);
 }
 
 .winner-banner__name {
   color: var(--green);
   font-size: clamp(24px, 5vw, 38px);
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(123, 255, 154, 0.85), 0 0 22px rgba(123, 255, 154, 0.5);
+  text-shadow:
+    0 0 10px rgba(123, 255, 154, 0.85),
+    0 0 22px rgba(123, 255, 154, 0.5);
 }
 
 .winner-banner__time {
   color: var(--green);
   font-size: clamp(18px, 3.6vw, 26px);
-  text-shadow: 0 0 8px rgba(123, 255, 154, 0.75), 0 0 16px rgba(123, 255, 154, 0.4);
+  text-shadow:
+    0 0 8px rgba(123, 255, 154, 0.75),
+    0 0 16px rgba(123, 255, 154, 0.4);
 }
 
 .winner-banner__close {

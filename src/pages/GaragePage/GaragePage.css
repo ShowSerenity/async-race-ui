@@ -67,14 +67,13 @@
   height: 16px;
   border-top: 2px solid rgba(255, 255, 255, 0.75);
   border-bottom: 2px solid rgba(255, 255, 255, 0.75);
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 10px,
-      rgba(255, 178, 77, 0.95) 10px 20px,
-      transparent 20px 30px,
-      rgba(255, 255, 255, 0.9) 30px 40px
-    );
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 10px,
+    rgba(255, 178, 77, 0.95) 10px 20px,
+    transparent 20px 30px,
+    rgba(255, 255, 255, 0.9) 30px 40px
+  );
   opacity: 0.95;
 }
 

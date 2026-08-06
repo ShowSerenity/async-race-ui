@@ -192,7 +192,7 @@ export const CarItem = ({ car }: CarItemProps) => {
             disabled={isEngineStarted}
             title="Start engine"
           >
-            <i className="fa-solid fa-play" aria-hidden="true"/>
+            <i className="fa-solid fa-play" aria-hidden="true" />
           </button>
         </div>
 
@@ -212,7 +212,7 @@ export const CarItem = ({ car }: CarItemProps) => {
             disabled={!isEngineStarted}
             title="Stop engine"
           >
-            <i className="fa-solid fa-stop" aria-hidden="true"/>
+            <i className="fa-solid fa-stop" aria-hidden="true" />
           </button>
         </div>
       </div>
