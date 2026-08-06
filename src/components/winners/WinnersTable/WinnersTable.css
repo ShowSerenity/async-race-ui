@@ -1,0 +1,46 @@
+.winners-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+.winners-table th,
+.winners-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.winners-table th {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.winners-table__sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.winners-table__sortable:hover {
+  color: var(--cyan);
+}
+
+.winners-table__icon {
+  width: 64px;
+  height: 32px;
+}
+
+@media (max-width: 600px) {
+  .winners-table th,
+  .winners-table td {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+
+  .winners-table__icon {
+    width: 44px;
+    height: 24px;
+  }
+}

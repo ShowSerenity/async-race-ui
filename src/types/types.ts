@@ -16,7 +16,7 @@ export interface Winner {
 }
 
 export interface WinnerWithCar extends Winner {
-  car: Car;
+  car: Car | null;
 }
 
 export type SortField = 'id' | 'wins' | 'time';

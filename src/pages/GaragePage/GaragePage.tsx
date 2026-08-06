@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CarForm } from '../../components/garage/CarForm/CarForm';
 import { CarItem } from '../../components/garage/CarItem/CarItem';
 import { Pagination } from '../../components/common/Pagination/Pagination';
-import { RaceControls } from '../../components/garage/RaceControls';
+import { RaceControls } from '../../components/garage/RaceControls/RaceControls';
 import './GaragePage.css';
 
 const CARS_PER_PAGE = 7;

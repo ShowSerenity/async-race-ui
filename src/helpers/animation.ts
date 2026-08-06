@@ -2,10 +2,10 @@ const MS_IN_SECOND = 1000;
 const DEFAULT_ANIMATION_PADDING_PX = 90;
 
 export const calcAnimationDuration = (velocity: number, distance: number): number =>
-  (distance / velocity) * MS_IN_SECOND;
+  distance / velocity;
 
 export const calcRaceTimeSeconds = (velocity: number, distance: number): number =>
-  distance / velocity;
+  calcAnimationDuration(velocity, distance) / MS_IN_SECOND;
 
 export const calcTrackDistance = (trackWidth: number): number =>
   Math.max(trackWidth - DEFAULT_ANIMATION_PADDING_PX, 0);
