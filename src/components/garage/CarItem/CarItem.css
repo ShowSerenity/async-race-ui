@@ -1,6 +1,6 @@
 .car-row {
   display: grid;
-  grid-template-columns: 210px 1fr;
+  grid-template-columns: 150px 1fr;
   grid-template-areas: 'controls track';
   min-height: 92px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
@@ -17,12 +17,9 @@
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  padding: 10px 12px 10px 0;
+  padding: 10px 8px 10px 0;
   min-width: 0;
   position: relative;
-  /* Кнопки должны быть выше глобальных линий старта/финиша
-     (z-index: 2 на .garage-track::before/::after), иначе на
-     мобильном линия проходит поверх них. */
   z-index: 4;
   background: var(--bg);
 }
@@ -30,16 +27,17 @@
 .car-row__action {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .car-action-btn {
-  width: 116px;
+  width: 96px;
   justify-content: center;
+  padding-inline: 6px;
 }
 
 .car-key-btn {
-  width: 44px;
+  width: 38px;
   justify-content: center;
   padding-inline: 0;
 }
@@ -68,7 +66,7 @@
 }
 
 .car-row__track::after {
-  right: 10px;
+  right: 76px;
   background: rgba(123, 255, 154, 0.95);
   box-shadow: 0 0 8px rgba(123, 255, 154, 0.55);
 }

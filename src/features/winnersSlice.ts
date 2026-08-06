@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { PaginatedResponse, SortField, SortOrder, Winner, WinnerWithCar } from '../types/types';
+import type {
+  PaginatedResponse,
+  SortField,
+  SortOrder,
+  Winner,
+  WinnerWithCar,
+} from '../types/types';
 import { createWinner, getCar, getWinner, getWinners, updateWinner } from '../api/api';
 
 interface WinnersState {
@@ -52,27 +58,28 @@ export const fetchWinners = createAsyncThunk<
   }
 });
 
-export const upsertWinner = createAsyncThunk<void, { id: number; time: number }, { rejectValue: string }>(
-  'winners/upsertWinner',
-  async ({ id, time }, { rejectWithValue }) => {
-    try {
-      const existing = await getWinner(id);
+export const upsertWinner = createAsyncThunk<
+  void,
+  { id: number; time: number },
+  { rejectValue: string }
+>('winners/upsertWinner', async ({ id, time }, { rejectWithValue }) => {
+  try {
+    const existing = await getWinner(id);
 
-      if (!existing) {
-        await createWinner({ id, wins: 1, time });
-        return;
-      }
-
-      await updateWinner({
-        id,
-        wins: existing.wins + 1,
-        time: time < existing.time ? time : existing.time,
-      });
-    } catch (error) {
-      rejectWithValue((error as Error).message);
+    if (!existing) {
+      await createWinner({ id, wins: 1, time });
+      return;
     }
-  },
-);
+
+    await updateWinner({
+      id,
+      wins: existing.wins + 1,
+      time: time < existing.time ? time : existing.time,
+    });
+  } catch (error) {
+    rejectWithValue((error as Error).message);
+  }
+});
 
 const winnersSlice = createSlice({
   name: 'winners',

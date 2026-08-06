@@ -18,13 +18,29 @@
   color: var(--text-soft);
 }
 
-.winners-table__sortable {
+.winners-table__sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
   user-select: none;
 }
 
-.winners-table__sortable:hover {
+.winners-table__sort-btn:hover {
   color: var(--cyan);
+}
+
+.winners-table__sort-btn:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .winners-table__icon {

@@ -9,7 +9,9 @@ const WINNERS_PER_PAGE = 10;
 
 export const WinnersPage = () => {
   const dispatch = useAppDispatch();
-  const { winners, page, totalCount, sort, order, isLoading } = useAppSelector(state => state.winners);
+  const { winners, page, totalCount, sort, order, isLoading } = useAppSelector(
+    state => state.winners,
+  );
 
   useEffect(() => {
     dispatch(fetchWinners());

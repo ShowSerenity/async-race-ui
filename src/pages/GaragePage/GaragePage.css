@@ -9,9 +9,9 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  --track-start: 282px;
-  --track-end: 10px;
-  --track-start-label: 272px;
+  --track-start: 222px;
+  --track-end: 76px;
+  --track-start-label: 210px;
   --track-label-z: 3;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .garage-track-label-finish {
-  right: -4px;
+  right: 64px;
   color: var(--green);
 }
 
@@ -128,7 +128,7 @@
   }
 
   .garage-track-label-finish {
-    right: -20px;
+    right: 67px;
   }
 
   .garage-bottom {

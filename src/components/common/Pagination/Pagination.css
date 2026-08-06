@@ -4,6 +4,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
+  flex-wrap: wrap;
 }
 
 .pagination__info {
@@ -17,6 +18,35 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pagination__jump {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(126, 231, 255, 0.2);
+}
+
+.pagination__jump-input {
+  width: 64px;
+  min-width: 0;
+  padding: 0 8px;
+  text-align: center;
+}
+
+/* Hide native number spinner arrows */
+.pagination__jump-input::-webkit-outer-spin-button,
+.pagination__jump-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pagination__jump-input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 @media (max-width: 600px) {
@@ -24,4 +54,5 @@
     width: 100%;
     justify-content: space-between;
   }
+
 }

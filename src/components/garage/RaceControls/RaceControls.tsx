@@ -1,6 +1,12 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { clearWinner, requestStart, resetRaceState, setRaceInProgress } from '../../../features/raceSlice';
+import {
+  clearWinner,
+  requestStart,
+  resetRaceState,
+  setRaceInProgress,
+  startNewRaceAttempt,
+} from '../../../features/raceSlice';
 import { fetchCars } from '../../../features/garageSlice';
 import { createRandomCarsPayload } from '../../../helpers/race';
 import { createCar, stopEngine } from '../../../api/api';
@@ -31,7 +37,7 @@ export const RaceControls = () => {
       return;
     }
 
-    dispatch(clearWinner());
+    dispatch(startNewRaceAttempt());
     dispatch(setRaceInProgress(true));
     dispatch(requestStart(cars.map(car => car.id)));
   };
@@ -39,6 +45,10 @@ export const RaceControls = () => {
   const handleResetRace = async () => {
     await stopAllCars(cars.map(car => car.id));
     dispatch(resetRaceState());
+  };
+
+  const handleCloseWinnerBanner = () => {
+    dispatch(clearWinner());
   };
 
   useEffect(() => {
@@ -80,7 +90,9 @@ export const RaceControls = () => {
         </button>
       </div>
 
-      {winner && <WinnerBanner name={winner.name} time={winner.time} />}
+      {winner && (
+        <WinnerBanner name={winner.name} time={winner.time} onClose={handleCloseWinnerBanner} />
+      )}
     </section>
   );
 };

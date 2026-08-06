@@ -1,55 +1,26 @@
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { setSort } from '../../../features/winnersSlice';
-import type { SortField, WinnerWithCar } from '../../../types/types';
+import type { SortField, SortOrder, WinnerWithCar } from '../../../types/types';
 import { CarIcon } from '../../common/CarIcon/CarIcon';
 import './WinnersTable.css';
-
-const TIME_FRACTION_DIGITS = 2;
-const PLACEHOLDER_COLOR = '#666666';
-const PLACEHOLDER_NAME = 'Unknown car';
-
-interface SortHeaderProps {
-  field: SortField;
-  label: string;
-  activeSort: SortField;
-  activeOrder: 'ASC' | 'DESC';
-  onSort: (field: SortField) => void;
-}
-
-const SortHeader = ({ field, label, activeSort, activeOrder, onSort }: SortHeaderProps) => {
-  const isActive = activeSort === field;
-  const arrow = isActive ? (activeOrder === 'ASC' ? '↑' : '↓') : '';
-
-  return (
-    <th className="winners-table__sortable" onClick={() => onSort(field)}>
-      {label} {arrow}
-    </th>
-  );
-};
-
-const renderRow = (winner: WinnerWithCar, index: number) => {
-  const name = winner.car?.name ?? PLACEHOLDER_NAME;
-  const color = winner.car?.color ?? PLACEHOLDER_COLOR;
-
-  return (
-    <tr key={winner.id}>
-      <td>{index + 1}</td>
-      <td>
-        <div className="winners-table__icon">
-          <CarIcon color={color} />
-        </div>
-      </td>
-      <td>{name}</td>
-      <td>{winner.wins}</td>
-      <td>{winner.time.toFixed(TIME_FRACTION_DIGITS)}</td>
-    </tr>
-  );
-};
 
 interface WinnersTableProps {
   winners: WinnerWithCar[];
   startIndex: number;
 }
+
+const TIME_FRACTION_DIGITS = 2;
+const SORT_ASC_ICON = '▲';
+const SORT_DESC_ICON = '▼';
+const NO_SORT_ICON = '';
+
+const getSortIcon = (field: SortField, activeSort: SortField, activeOrder: SortOrder): string => {
+  if (activeSort !== field) {
+    return NO_SORT_ICON;
+  }
+
+  return activeOrder === 'ASC' ? SORT_ASC_ICON : SORT_DESC_ICON;
+};
 
 export const WinnersTable = ({ winners, startIndex }: WinnersTableProps) => {
   const dispatch = useAppDispatch();
@@ -64,23 +35,39 @@ export const WinnersTable = ({ winners, startIndex }: WinnersTableProps) => {
   }
 
   return (
-    <table className="winners-table panel">
+    <table className="winners-table">
       <thead>
         <tr>
           <th>№</th>
           <th>Car</th>
           <th>Name</th>
-          <SortHeader field="wins" label="Wins" activeSort={sort} activeOrder={order} onSort={handleSort} />
-          <SortHeader
-            field="time"
-            label="Best time (s)"
-            activeSort={sort}
-            activeOrder={order}
-            onSort={handleSort}
-          />
+          <th>
+            <button className="winners-table__sort-btn" type="button" onClick={() => handleSort('wins')}>
+              Wins {getSortIcon('wins', sort, order)}
+            </button>
+          </th>
+          <th>
+            <button className="winners-table__sort-btn" type="button" onClick={() => handleSort('time')}>
+              Best time (s) {getSortIcon('time', sort, order)}
+            </button>
+          </th>
         </tr>
       </thead>
-      <tbody>{winners.map((winner, index) => renderRow(winner, startIndex + index))}</tbody>
+      <tbody>
+        {winners.map((winner, index) => (
+          <tr key={winner.id}>
+            <td>{startIndex + index + 1}</td>
+            <td>
+              <div className="winners-table__icon">
+                <CarIcon color={winner.car?.color ?? '#ffffff'} />
+              </div>
+            </td>
+            <td>{winner.car?.name ?? 'Unknown car'}</td>
+            <td>{winner.wins}</td>
+            <td>{winner.time.toFixed(TIME_FRACTION_DIGITS)}</td>
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 };
