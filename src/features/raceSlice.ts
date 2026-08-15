@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/tool
 import type { RootState } from '../app/store';
 import { upsertWinner } from './winnersSlice';
 
-interface CarRaceState {
+export interface CarRaceState {
   isEngineStarted: boolean;
   isDriving: boolean;
   isFinished: boolean;
@@ -168,6 +168,40 @@ export const finishRaceCar = createAsyncThunk<
   );
 
   dispatch(upsertWinner({ id: payload.id, time: payload.time }));
+});
+
+/**
+ * Applies the result of a drive() request, but ONLY if it belongs to the
+ * car's CURRENT attempt.
+ *
+ * drive() is held open by the server for the whole race duration and its
+ * client-side promise cannot be cancelled. If the car was stopped and
+ * restarted (or the whole race was reset and started again) while the old
+ * drive() was still pending, `isEngineStarted` alone can't tell old and new
+ * attempts apart — a fresh attempt sets it back to `true` too. So we also
+ * compare `startedAt`, which is a fresh `performance.now()` timestamp
+ * generated for every single attempt and therefore unique per attempt.
+ * If it doesn't match the car's current `startedAt`, this result belongs
+ * to an attempt that no longer exists and must be ignored.
+ */
+export const completeCarRace = createAsyncThunk<
+  void,
+  { id: number; success: boolean; time: number; progress: number; startedAt: number },
+  { state: RootState }
+>('race/completeCarRace', (payload, { getState, dispatch }) => {
+  const car = getState().race.cars[payload.id];
+
+  if (!car || !car.isEngineStarted || car.startedAt !== payload.startedAt) {
+    return;
+  }
+
+  if (payload.success) {
+    dispatch(setCarFinished({ id: payload.id }));
+    dispatch(finishRaceCar({ id: payload.id, time: payload.time }));
+    return;
+  }
+
+  dispatch(setCarError({ id: payload.id, progress: payload.progress }));
 });
 
 export default raceSlice.reducer;

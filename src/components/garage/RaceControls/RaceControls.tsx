@@ -42,9 +42,14 @@ export const RaceControls = () => {
     dispatch(requestStart(cars.map(car => car.id)));
   };
 
-  const handleResetRace = async () => {
-    await stopAllCars(cars.map(car => car.id));
+  // Reset the Redux race state FIRST, synchronously — this immediately
+  // closes the window for any still-pending drive() request to be accepted
+  // by completeCarRace (it checks race.cars[id], which is now empty).
+  // The actual stopEngine calls are fired afterwards, in the background,
+  // without blocking the visual/logical reset on their network latency.
+  const handleResetRace = () => {
     dispatch(resetRaceState());
+    stopAllCars(cars.map(car => car.id)).catch(() => {});
   };
 
   const handleCloseWinnerBanner = () => {
