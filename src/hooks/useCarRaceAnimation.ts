@@ -14,7 +14,10 @@ const IDLE_RENDER: RenderPosition = { x: 0, transitionMs: 0 };
  * travel distance in sync with the track's real rendered width so the car
  * always stops exactly on the finish line, on any screen size.
  */
-export const useCarRaceAnimation = (raceState: CarRaceState | undefined, finishLineInsetPx: number) => {
+export const useCarRaceAnimation = (
+  raceState: CarRaceState | undefined,
+  finishLineInsetPx: number,
+) => {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const iconWrapRef = useRef<HTMLDivElement | null>(null);
   const [maxTranslate, setMaxTranslate] = useState(0);
