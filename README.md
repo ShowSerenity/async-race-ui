@@ -2,7 +2,7 @@
 
 **Deployed app:** [async-race-ui-eight.vercel.app]
 
-**Self-check score estimate:** ~380 / 400 pts
+**Self-check score estimate:** ~400 / 400 pts
 
 
 ## How to run locally
